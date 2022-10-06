@@ -1,0 +1,8 @@
+@import './src/styles/$variables';
+.item{
+  &-image{
+    padding: 9px;
+    object-fit: cover;
+    border-radius: $border-radius;
+  }
+}
