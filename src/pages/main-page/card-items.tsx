@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Modal, Paper } from "@mui/material";
+import { Button, Grid, Modal, Paper, Stack } from "@mui/material";
 import { useAppDispatch } from "../../app/hooks";
 import { ItemModel } from "../../redux/types";
 import { doDeleteItem, doLoadItems, ItemToCreate } from "../../redux/slices/item";
 import ShowComments from "./show-comments";
 import Box from "@mui/material/Box";
 import AddItemDialog from "./add-item-dialog/add-item-dialog";
+import { Item } from "./add-item-dialog/Item";
 
 function CardItems() {
      const dispatch = useAppDispatch();
@@ -60,13 +61,15 @@ function CardItems() {
                                         }}
                                    >
                                         <div>
-                                             <div>{item.name}
-                                                  {item.weightInGrams}</div>
+                                             <div>{item.name}</div>
                                              <img src={item.imageUrl} alt="item_image" className="item-image" />
                                         </div>
                                         <div>
-                                             <AddItemDialog item={item} />
-                                             <Button onClick={() => setModalOpen(true)}>Delete item</Button>
+                                             <Stack direction="row"><Item><AddItemDialog item={item} /></Item>
+                                                  <Item><Button
+                                                       variant="outlined" color="anger"
+                                                       onClick={() => setModalOpen(true)}
+                                                  >Delete</Button></Item></Stack>
                                              <Modal
                                                   open={modalOpen}
                                                   onClose={() => setModalOpen(false)}

@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import {
-     Button,
-     Dialog,
-     DialogActions,
-     DialogContent,
-     DialogTitle,
-     IconButton, Paper,
-     Stack,
-     styled,
-     TextField,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Button, Dialog, DialogActions, DialogContent, Stack, styled, TextField } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Item } from "./Item";
 import { BootstrapDialogTitle } from "./bootstrap-dialog-title";
@@ -27,7 +17,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      },
 }));
 
-function AddItemDialog(props: {item?: ItemModel}) {
+function AddItemDialog(props: { item?: ItemModel }) {
      const [open, setOpen] = useState(false);
      const handleClose = () => {
           setOpen(false);
@@ -35,13 +25,13 @@ function AddItemDialog(props: {item?: ItemModel}) {
      const handleClickOpen = () => {
           setOpen(true);
      };
-     const dispatch = useAppDispatch()
-     const [imageUrl, setImageUrl] = useState(props.item?.imageUrl||"");
-     const [name, setName] = useState(props.item?.name||"");
-     const [count, setCount] = useState(props.item?.count||0);
-     const [width, setWidth] = useState(props.item?.size?.width||0);
-     const [height, setHeight] = useState(props.item?.size?.height||0);
-     const [weightInGrams, setWeightInGrams] = useState(props.item?.weightInGrams||0);
+     const dispatch = useAppDispatch();
+     const [imageUrl, setImageUrl] = useState(props.item?.imageUrl || "");
+     const [name, setName] = useState(props.item?.name || "");
+     const [count, setCount] = useState(props.item?.count || 0);
+     const [width, setWidth] = useState(props.item?.size?.width || 0);
+     const [height, setHeight] = useState(props.item?.size?.height || 0);
+     const [weightInGrams, setWeightInGrams] = useState(props.item?.weightInGrams || 0);
      const itemToCreate: ItemToCreate = {
           imageUrl: imageUrl,
           name: name,
@@ -54,21 +44,21 @@ function AddItemDialog(props: {item?: ItemModel}) {
 
      };
      const addItem = () => {
-          dispatch(doCreateItem(itemToCreate))
-          handleClose()
-     }
+          dispatch(doCreateItem(itemToCreate));
+          handleClose();
+     };
      const editItem = () => {
           // @ts-ignore
           const item_id = props.item.id!;
           console.log(props.item);
-          dispatch(doUpdateItem({itemToCreate, item_id} ))
-     }
+          dispatch(doUpdateItem({ itemToCreate, item_id }));
+     };
 
      return (
           <div>
-               <Button color={`${props.item?"primary":"secondary"}`} variant="outlined" onClick={handleClickOpen}>
-                    <div>{props.item ? "Edit item" : "Add item"}</div>
-                    <AddBoxIcon/>
+               <Button color={`${props.item ? "steelBlue" : "secondary"}`} variant="outlined" onClick={handleClickOpen}>
+                    <div>{props.item ? "Edit" : "Add item"}</div>
+                    <div>{props.item ? <EditIcon /> : <AddBoxIcon />}</div>
                </Button>
                <BootstrapDialog
                     onClose={handleClose}
@@ -83,30 +73,43 @@ function AddItemDialog(props: {item?: ItemModel}) {
                          <Stack spacing={2}>
                               <Item>
 
-                                   <TextField id="standard-basic" label="Image url" variant="standard" color="secondary" value={imageUrl} onChange={event => setImageUrl(event.target.value)}/>
-                                   <TextField id="standard-basic" label="Name" variant="standard" color="secondary" value={name} onChange={event => setName(event.target.value)}/>
-                                   <TextField id="standard-basic" label="Count" variant="standard" color="secondary" value={count} onChange={event => setCount(event.target.value as unknown as number)}/>
+                                   <TextField id="standard-basic" label="Image url" variant="standard"
+                                              color="secondary" value={imageUrl}
+                                              onChange={event => setImageUrl(event.target.value)} />
+                                   <TextField id="standard-basic" label="Name" variant="standard"
+                                              color="secondary" value={name}
+                                              onChange={event => setName(event.target.value)} />
+                                   <TextField id="standard-basic" label="Count" variant="standard"
+                                              color="secondary" value={count}
+                                              onChange={event => setCount(event.target.value as unknown as number)} />
                               </Item>
                               <Item>
-                                   <TextField id="standard-basic" label="Width" variant="standard" color="secondary" value={width} onChange={event => setWidth(event.target.value as unknown as number)}/>
-                                   <TextField id="standard-basic" label="Height" variant="standard" color="secondary" value={height} onChange={event => setHeight(event.target.value as unknown as number)}/>
-                                   <TextField id="standard-basic" label="Weight (grams)" variant="standard" color="secondary" value={weightInGrams} onChange={event => setWeightInGrams(event.target.value as unknown as number)}/>
+                                   <TextField id="standard-basic" label="Width" variant="standard"
+                                              color="secondary" value={width}
+                                              onChange={event => setWidth(event.target.value as unknown as number)} />
+                                   <TextField id="standard-basic" label="Height" variant="standard"
+                                              color="secondary" value={height}
+                                              onChange={event => setHeight(event.target.value as unknown as number)} />
+                                   <TextField id="standard-basic" label="Weight (grams)" variant="standard"
+                                              color="secondary" value={weightInGrams}
+                                              onChange={event => setWeightInGrams(event.target.value as unknown as number)} />
                               </Item>
                          </Stack>
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions >
                          <Button autoFocus onClick={handleClose} color="warning">
                               Cancel
                          </Button>
-                         {props.item?<Button autoFocus onClick={editItem} color="secondary">
+                         {props.item ? <Button autoFocus onClick={editItem} color="secondary">
                               Save changes
-                         </Button>:<Button autoFocus onClick={addItem} color="secondary">
+                         </Button> : <Button autoFocus onClick={addItem} color="secondary">
                               Add!
                          </Button>}
                     </DialogActions>
                </BootstrapDialog>
           </div>
-     );
+     )
+          ;
 }
 
 
