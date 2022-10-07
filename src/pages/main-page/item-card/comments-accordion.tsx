@@ -40,18 +40,14 @@ function CommentsAccordion(props: { comments: CommentModel[], itemId: number }) 
                     {props.comments.map((comment) => {
                          return (<Card color="secondary" variant="outlined" key={comment.description}>
                               <Grid direction="column" container spacing={2} justifyContent="space-between">
-                                   <Grid item xs={12}><StyledPaper>{comment.description}</StyledPaper></Grid>
-
-                                   <Grid item xs={3} onClick={() => dispatch(doDeleteComment(comment)).finally(() => {
+                                   <Grid item xs={12}><StyledPaper>{comment.description} <div style={{display: "inline-block"}} onClick={() => dispatch(doDeleteComment(comment)).finally(() => {
                                         fetchData();
-                                   })}>
-                                        <StyledPaper><CloseIcon /></StyledPaper>
-                                   </Grid>
+                                   })}><CloseIcon /></div></StyledPaper></Grid>
                               </Grid>
                          </Card>);
                     })}
 
-                    <StyledPaper><TextField variant="filled" sx={{ color: "black" }} color="primary"
+                    <StyledPaper><TextField variant="filled" sx={{ color: "black" }} color="secondary"
                                             label="Enter your's comment"
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}

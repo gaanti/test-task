@@ -94,10 +94,10 @@ function AddItemDialog(props: { item?: ItemModel }) {
                                          onChange={event => setCount(event.target.value as unknown as number)} />
                          </StyledPaper>
                          <StyledPaper>
-                              <TextField id="standard-basic" label="Width" variant="standard"
+                              <TextField id="standard-basic" label="Width (centimeters)" variant="standard"
                                          color="secondary" value={width}
                                          onChange={event => setWidth(event.target.value as unknown as number)} />
-                              <TextField id="standard-basic" label="Height" variant="standard"
+                              <TextField id="standard-basic" label="Height (centimeters)" variant="standard"
                                          color="secondary" value={height}
                                          onChange={event => setHeight(event.target.value as unknown as number)} />
                               <TextField id="standard-basic" label="Weight (grams)" variant="standard"
