@@ -14,14 +14,14 @@ import { CommentToCreate, doCreateComment, doDeleteComment } from "../../redux/s
 import { useAppDispatch } from "../../app/hooks";
 import CloseIcon from "@mui/icons-material/Close";
 import { Item } from "./add-item-dialog/Item";
-import { doLoadItems, setItems } from "../../redux/slices/item";
+import { doLoadItems, doReloadItems, setItems } from "../../redux/slices/item";
 
 function ShowComments(props: { comments: Comment[], itemId: number }) {
      const dispatch = useAppDispatch();
      const [description, setDescription] = useState("");
      const fetchData = async () => {
           const items = await dispatch(doLoadItems()).unwrap();
-          dispatch(setItems(items));
+          dispatch(setItems(items))
      };
      const comment: CommentToCreate = {
           description: description,
@@ -40,11 +40,13 @@ function ShowComments(props: { comments: Comment[], itemId: number }) {
                <AccordionDetails sx={{ overflow: "scroll", maxHeight: "253px" }}>
                     <Stack direction="column" spacing={2}>
                          {props.comments.map((comment) => {
-                              return (<Card color="secondary" variant="outlined">
-                                        <Grid direction="column" spacing={2} justifyContent="space-between">
-                                             <Grid xs={12}><Item>{comment.description}</Item></Grid>
+                              return (<Card color="secondary" variant="outlined" key={comment.description}>
+                                        <Grid direction="column" container spacing={2} justifyContent="space-between">
+                                             <Grid item xs={12}><Item>{comment.description}</Item></Grid>
 
-                                             <Grid xs={3} onClick={() => dispatch(doDeleteComment(comment))}>
+                                             <Grid item xs={3} onClick={() => dispatch(doDeleteComment(comment)).finally(() => {
+                                                  fetchData()
+                                             })}>
                                                   <Item><CloseIcon /></Item>
                                              </Grid>
                                         </Grid>

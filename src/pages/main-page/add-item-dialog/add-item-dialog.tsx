@@ -5,22 +5,14 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Item } from "./Item";
 import { BootstrapDialogTitle } from "./bootstrap-dialog-title";
 import { useAppDispatch } from "../../../app/hooks";
-import {
-     doCreateItem,
-     doLoadItems,
-     doUpdateItem,
-     itemsSelector,
-     ItemToCreate, setItems,
-} from "../../../redux/slices/item";
+import { doCreateItem, doLoadItems, doUpdateItem, ItemToCreate, setItems } from "../../../redux/slices/item";
 import { ItemModel } from "../../../redux/types";
-import { useSelector } from "react-redux";
 import { Snackbar } from "@material-ui/core";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      "& .MuiDialogContent-root": {
           padding: theme.spacing(2),
-     },
-     "& .MuiDialogActions-root": {
+     }, "& .MuiDialogActions-root": {
           padding: theme.spacing(1),
      },
 }));
@@ -28,6 +20,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 function AddItemDialog(props: { item?: ItemModel }) {
      const [success, setSuccess] = useState(false);
      const [open, setOpen] = useState(false);
+     const fetchData = async () => {
+          const items = await dispatch(doLoadItems()).unwrap();
+          dispatch(setItems(items));
+     };
      const handleClose = () => {
           setOpen(false);
      };
@@ -42,24 +38,15 @@ function AddItemDialog(props: { item?: ItemModel }) {
      const [height, setHeight] = useState(props.item?.size?.height || 0);
      const [weightInGrams, setWeightInGrams] = useState(props.item?.weightInGrams || 0);
      const itemToCreate: ItemToCreate = {
-          imageUrl: imageUrl,
-          name: name,
-          count: count,
-          size: {
-               width: width,
-               height: height,
-          },
-          weightInGrams: weightInGrams,
+          imageUrl: imageUrl, name: name, count: count, size: {
+               width: width, height: height,
+          }, weightInGrams: weightInGrams,
 
      };
-     const fetchData = async () => {
-          const items = await dispatch(doLoadItems()).unwrap();
-          dispatch(setItems(items));
-     };
      const addItem = () => {
-          dispatch(doCreateItem(itemToCreate)).finally( () => {
+          dispatch(doCreateItem(itemToCreate)).finally(() => {
                fetchData();
-               setSuccess(true)
+               setSuccess(true);
           });
           handleClose();
      };
@@ -67,17 +54,16 @@ function AddItemDialog(props: { item?: ItemModel }) {
           // @ts-ignore
           const item_id = props.item.id!;
           console.log(props.item);
-          dispatch(doUpdateItem({ itemToCreate, item_id })).finally( () => {
+          dispatch(doUpdateItem({ itemToCreate, item_id })).finally(() => {
                fetchData();
-               setSuccess(true)
+               setSuccess(true);
           });
           handleClose();
      };
 
-     return (
-          <div>
+     return (<div>
                <Snackbar open={success} autoHideDuration={6000} onClose={() => setSuccess(false)}>
-                    <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: "100%" }}>
                          Action successful
                     </Alert>
                </Snackbar>
@@ -121,7 +107,7 @@ function AddItemDialog(props: { item?: ItemModel }) {
                               </Item>
                          </Stack>
                     </DialogContent>
-                    <DialogActions >
+                    <DialogActions>
                          <Button autoFocus onClick={handleClose} color="warning">
                               Cancel
                          </Button>
@@ -132,9 +118,7 @@ function AddItemDialog(props: { item?: ItemModel }) {
                          </Button>}
                     </DialogActions>
                </BootstrapDialog>
-          </div>
-     )
-          ;
+          </div>);
 }
 
 

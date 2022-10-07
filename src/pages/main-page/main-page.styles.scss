@@ -1,8 +1,21 @@
 @import './src/styles/$variables';
 .item{
   &-image{
-    padding: 9px;
-    object-fit: contain;
+    padding: 9px 0;
+    margin: auto;
+    object-fit: scale-down;
+    max-width: 182px;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    width: auto;
     border-radius: $border-radius;
+  }
+  &-name{
+    padding-top: 9px;
+    font-weight: 500;
+    font-size: 19px;
+    text-align: center;
+    margin: auto;
   }
 }

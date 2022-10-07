@@ -32,6 +32,14 @@ export const doLoadItems = createAsyncThunk(
           });
      },
 );
+export const doReloadItems = createAsyncThunk(
+     "items/load",
+     async (item, thunkAPI) => {
+          const items = await thunkAPI.dispatch(doLoadItems())
+          console.log(items.payload);
+          thunkAPI.dispatch(setItems(items.payload))
+     },
+);
 export const doCreateItem = createAsyncThunk<ItemModel, ItemToCreate, { state: RootState }>(
      "items/create",
      async (item, thunkAPI) => {
@@ -66,18 +74,11 @@ export const itemSlice = createSlice({
      },
      extraReducers: (builder) => {
           builder.addCase(doLoadItems.fulfilled, (state, action) => {
+               console.log(action);
                state.items = action.payload;
-          });
-          builder.addCase(doDeleteItem.fulfilled, (state, action) => {
-               const dispatch = useAppDispatch()
-               const items = dispatch(doLoadItems()).unwrap()
-               debugger
-               console.log(items);
-               // state.items = dispatch(doLoadItems()).unwrap()
           });
      },
 });
 
 export const { setItems } = itemSlice.actions;
 export const itemsSelector = (state: RootState) => state.items.items;
-export const itemReducer = itemSlice.reducer;
