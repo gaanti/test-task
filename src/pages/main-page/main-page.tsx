@@ -1,17 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import "./main-page.styles.scss";
-import CardItems from "./card-items";
-import NavBar from "../nav-bar";
-
-const bull = (
-     <Box
-          component="span"
-          sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-     >
-          •
-     </Box>
-);
+import CardItems from "./item-card/card-items";
+import NavBar from "./navbar/nav-bar";
 
 export default function MainPage() {
      return (

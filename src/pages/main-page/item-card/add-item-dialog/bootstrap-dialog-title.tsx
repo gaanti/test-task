@@ -2,7 +2,7 @@ import { DialogTitle, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 
-export const BootstrapDialogTitle = (props: any) => {
+const BootstrapDialogTitle = (props: any) => {
      const { children, onClose, ...other } = props;
 
      return (
@@ -25,3 +25,4 @@ export const BootstrapDialogTitle = (props: any) => {
           </DialogTitle>
      );
 };
+export default React.memo(BootstrapDialogTitle);
