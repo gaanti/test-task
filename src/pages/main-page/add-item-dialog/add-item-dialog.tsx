@@ -15,7 +15,8 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Item } from "./Item";
 import { BootstrapDialogTitle } from "./bootstrap-dialog-title";
 import { useAppDispatch } from "../../../app/hooks";
-import { doCreateItem, ItemToCreate } from "../../../redux/slices/item";
+import { doCreateItem, doUpdateItem, ItemToCreate } from "../../../redux/slices/item";
+import { ItemModel } from "../../../redux/types";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      "& .MuiDialogContent-root": {
@@ -26,7 +27,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      },
 }));
 
-function AddItemDialog() {
+function AddItemDialog(props: {item?: ItemModel}) {
      const [open, setOpen] = useState(false);
      const handleClose = () => {
           setOpen(false);
@@ -35,12 +36,12 @@ function AddItemDialog() {
           setOpen(true);
      };
      const dispatch = useAppDispatch()
-     const [imageUrl, setImageUrl] = useState("");
-     const [name, setName] = useState("");
-     const [count, setCount] = useState(0);
-     const [width, setWidth] = useState(0);
-     const [height, setHeight] = useState(0);
-     const [weightInGrams, setWeightInGrams] = useState(0);
+     const [imageUrl, setImageUrl] = useState(props.item?.imageUrl||"");
+     const [name, setName] = useState(props.item?.name||"");
+     const [count, setCount] = useState(props.item?.count||0);
+     const [width, setWidth] = useState(props.item?.size?.width||0);
+     const [height, setHeight] = useState(props.item?.size?.height||0);
+     const [weightInGrams, setWeightInGrams] = useState(props.item?.weightInGrams||0);
      const itemToCreate: ItemToCreate = {
           imageUrl: imageUrl,
           name: name,
@@ -56,11 +57,17 @@ function AddItemDialog() {
           dispatch(doCreateItem(itemToCreate))
           handleClose()
      }
+     const editItem = () => {
+          // @ts-ignore
+          const item_id = props.item.id!;
+          console.log(props.item);
+          dispatch(doUpdateItem({itemToCreate, item_id} ))
+     }
 
      return (
           <div>
-               <Button color="secondary" variant="outlined" onClick={handleClickOpen}>
-                    Add product
+               <Button color={`${props.item?"primary":"secondary"}`} variant="outlined" onClick={handleClickOpen}>
+                    <div>{props.item ? "Edit item" : "Add item"}</div>
                     <AddBoxIcon/>
                </Button>
                <BootstrapDialog
@@ -70,6 +77,7 @@ function AddItemDialog() {
                >
                     <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                          Product params
+                         {props.item ? "Edit product params" : "Add product params"}
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
                          <Stack spacing={2}>
@@ -87,9 +95,14 @@ function AddItemDialog() {
                          </Stack>
                     </DialogContent>
                     <DialogActions>
-                         <Button autoFocus onClick={addItem} color="secondary">
-                              Add!
+                         <Button autoFocus onClick={handleClose} color="warning">
+                              Cancel
                          </Button>
+                         {props.item?<Button autoFocus onClick={editItem} color="secondary">
+                              Save changes
+                         </Button>:<Button autoFocus onClick={addItem} color="secondary">
+                              Add!
+                         </Button>}
                     </DialogActions>
                </BootstrapDialog>
           </div>

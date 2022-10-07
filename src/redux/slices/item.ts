@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ItemModel } from "../types";
 import { RootState } from "../../app/store";
 import { createItem, deleteItem, loadItems, updateItem } from "../../app/api/item.api";
+import { doCreateComment } from "./coment";
 
 export interface item {
      items: ItemModel[];
@@ -38,27 +39,32 @@ export const doCreateItem = createAsyncThunk<ItemModel, ItemToCreate, { state: R
           });
      },
 );
-export const doUpdateItem = createAsyncThunk<ItemModel, ItemModel, { state: RootState }>(
+export const doUpdateItem = createAsyncThunk<ItemModel, {itemToCreate: ItemToCreate, item_id:number}, { state: RootState }>(
      "items/update",
-     async (item, thunkAPI) => {
-          return updateItem(item, item.id).then((res) => {
+     async (props, thunkAPI) => {
+          return updateItem(props.itemToCreate, props.item_id).then((res) => {
                return res.content;
           });
      },
 );
-export const doDeleteItem = createAsyncThunk<void, ItemModel, { state: RootState }>(
+export const doDeleteItem = createAsyncThunk<void, number, { state: RootState }>(
      "items/delete",
-     async (item, thunkAPI) => { deleteItem(item.id) },
+     async (item_id, thunkAPI) => {
+          deleteItem(item_id);
+     },
 );
 export const itemSlice = createSlice({
      name: "itemSlice",
      initialState,
      reducers: {},
      extraReducers: (builder) => {
-          builder.addCase(doLoadItems.fulfilled, (state, action)=>{
-               state.items = action.payload
-          })
-     }
+          builder.addCase(doLoadItems.fulfilled, (state, action) => {
+               state.items = action.payload;
+          });
+          builder.addCase(doCreateItem.fulfilled, (state, action) => {
+               state.items = [...state.items, action.payload]
+          });
+     },
 });
 export const itemsSelector = (state: RootState) => state.items.items;
-export const itemReducer = itemSlice.reducer
+export const itemReducer = itemSlice.reducer;

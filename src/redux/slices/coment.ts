@@ -11,7 +11,11 @@ const initialState: commentSlice = {
      comments: [],
 };
 
-export const doCreateComment = createAsyncThunk<Comment, { comment: Comment, item_id: number }, { state: RootState }>(
+export interface CommentToCreate {
+     description: string
+}
+
+export const doCreateComment = createAsyncThunk<Comment, { comment: CommentToCreate, item_id: number }, { state: RootState }>(
      "comment/create",
      async (props, thunkAPI) => {
           return createComment(props.comment, props.item_id).then((res) => {

@@ -24,8 +24,9 @@ export const loadItems = (): Promise<ItemsLoadResponse> =>
 export const createItem = (item: ItemToCreate): Promise<ItemCreateResponse> =>
      httpApi.post<ItemCreateResponse>("/create", { item }).then(({ data }) => data);
 
-export const updateItem = (item: ItemModel, itemId: number): Promise<ItemUpdateResponse> =>
-     httpApi.put<ItemUpdateResponse>(`/edit/${item.id}`, { item }).then(({ data }) => data);
+export const updateItem = (item: ItemToCreate, itemId: number): Promise<ItemUpdateResponse> => {
+     return httpApi.put<ItemUpdateResponse>(`/edit/${itemId}`, { item }).then(({ data }) => data);
+}
 
 export const deleteItem = (item_id: number): Promise<ItemDeleteResponse> =>
      httpApi.delete<ItemDeleteResponse>(`/delete/${item_id}`, {
