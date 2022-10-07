@@ -1,6 +1,6 @@
-import { ItemModel } from "../../redux/types";
 import { httpApi } from "./api";
 import { ItemToCreate } from "../../redux/slices/item";
+import { ItemModel } from "../../redux/types/itemModel";
 
 export interface ItemsLoadResponse {
      content: ItemModel[];

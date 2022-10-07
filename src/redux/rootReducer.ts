@@ -1,4 +1,4 @@
-import { itemSlice } from "../redux/slices/item";
+import { itemSlice } from "./slices/item";
 
 
 export default {

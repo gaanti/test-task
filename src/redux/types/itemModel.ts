@@ -1,3 +1,5 @@
+import { CommentModel } from "./CommentModel";
+
 export interface ItemModel {
      id: number,
      imageUrl: string,
@@ -8,11 +10,5 @@ export interface ItemModel {
           height: number
      },
      weightInGrams: 200,
-     comments: Comment[]
-}
-
-export interface Comment {
-     id: number,
-     description: string,
-     date: string
+     comments: CommentModel[]
 }

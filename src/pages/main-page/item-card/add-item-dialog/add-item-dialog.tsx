@@ -4,10 +4,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import StyledPaper from "./StyledPaper";
 import BootstrapDialogTitle from "./bootstrap-dialog-title";
-import { useAppDispatch } from "../../../../app/hooks";
+import { useAppDispatch } from "../../../../redux/hooks";
 import { doCreateItem, doLoadItems, doUpdateItem, ItemToCreate, setItems } from "../../../../redux/slices/item";
-import { ItemModel } from "../../../../redux/types";
 import { Snackbar } from "@material-ui/core";
+import { ItemModel } from "../../../../redux/types/itemModel";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      "& .MuiDialogContent-root": {

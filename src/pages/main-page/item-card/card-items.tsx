@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { Grid, Paper, Stack } from "@mui/material";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { doLoadItems, itemsSelector, setItems } from "../../../redux/slices/item";
 import CommentsAccordion from "./comments-accordion";
-import { useSelector } from "react-redux";
 import DeleteItemDialog from "./delete-item-dialog";
 
 function CardItems() {
      const dispatch = useAppDispatch();
-     const items = useSelector((itemsSelector));
+     const items = useAppSelector((itemsSelector));
      useEffect(() => {
           dispatch(doLoadItems());
      }, []);

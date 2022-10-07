@@ -6,16 +6,16 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Card, Grid, Stack, TextField } from "@mui/material";
-import { Comment } from "../../../redux/types";
 import IconButton from "@mui/material/IconButton";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { CommentToCreate, doCreateComment, doDeleteComment } from "../../../redux/slices/coment";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../redux/hooks";
 import CloseIcon from "@mui/icons-material/Close";
 import StyledPaper from "./add-item-dialog/StyledPaper";
 import { doLoadItems, setItems } from "../../../redux/slices/item";
+import { CommentModel } from "../../../redux/types/CommentModel";
 
-function CommentsAccordion(props: { comments: Comment[], itemId: number }) {
+function CommentsAccordion(props: { comments: CommentModel[], itemId: number }) {
      const dispatch = useAppDispatch();
      const [description, setDescription] = useState("");
      const fetchData = async () => {

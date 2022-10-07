@@ -1,13 +1,13 @@
-import { Comment } from "../../redux/types";
 import { httpApi } from "./api";
 import { CommentToCreate } from "../../redux/slices/coment";
+import { CommentModel } from "../../redux/types/CommentModel";
 
 export interface CommentLoadResponse {
-     content: Comment[];
+     content: CommentModel[];
 }
 
 export interface CommentCreateResponse {
-     content: Comment;
+     content: CommentModel;
 }
 
 export interface CommentDeleteResponse {

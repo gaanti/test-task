@@ -4,7 +4,7 @@ import StyledPaper from "./add-item-dialog/StyledPaper";
 import AddItemDialog from "./add-item-dialog/add-item-dialog";
 import Box from "@mui/material/Box";
 import { deleteItem } from "../../../app/api/item.api";
-import { ItemModel } from "../../../redux/types";
+import { ItemModel } from "../../../redux/types/itemModel";
 
 function DeleteItemDialog(props: { item: ItemModel, fetchData: () => Promise<void> }) {
      const [modalOpen, setModalOpen] = useState(false);

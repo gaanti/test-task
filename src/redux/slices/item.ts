@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ItemModel } from "../types";
-import { RootState } from "../../app/store";
+import { RootState } from "../store";
 import { createItem, deleteItem, loadItems, updateItem } from "../../app/api/item.api";
+import { ItemModel } from "../types/itemModel";
 
 export interface item {
      items: ItemModel[];
