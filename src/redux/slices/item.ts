@@ -3,6 +3,7 @@ import { ItemModel } from "../types";
 import { RootState } from "../../app/store";
 import { createItem, deleteItem, loadItems, updateItem } from "../../app/api/item.api";
 import { doCreateComment } from "./coment";
+import { useAppDispatch } from "../../app/hooks";
 
 export interface item {
      items: ItemModel[];
@@ -43,28 +44,40 @@ export const doUpdateItem = createAsyncThunk<ItemModel, {itemToCreate: ItemToCre
      "items/update",
      async (props, thunkAPI) => {
           return updateItem(props.itemToCreate, props.item_id).then((res) => {
+
                return res.content;
           });
      },
 );
-export const doDeleteItem = createAsyncThunk<void, number, { state: RootState }>(
+export const doDeleteItem = createAsyncThunk<any, number, { state: RootState }>(
      "items/delete",
      async (item_id, thunkAPI) => {
-          deleteItem(item_id);
+          const response = await deleteItem(item_id);
+          return response
      },
 );
 export const itemSlice = createSlice({
      name: "itemSlice",
      initialState,
-     reducers: {},
+     reducers: {
+          setItems: (state, action) => {
+               state.items = action.payload;
+          },
+     },
      extraReducers: (builder) => {
           builder.addCase(doLoadItems.fulfilled, (state, action) => {
                state.items = action.payload;
           });
-          builder.addCase(doCreateItem.fulfilled, (state, action) => {
-               state.items = [...state.items, action.payload]
+          builder.addCase(doDeleteItem.fulfilled, (state, action) => {
+               const dispatch = useAppDispatch()
+               const items = dispatch(doLoadItems()).unwrap()
+               debugger
+               console.log(items);
+               // state.items = dispatch(doLoadItems()).unwrap()
           });
      },
 });
+
+export const { setItems } = itemSlice.actions;
 export const itemsSelector = (state: RootState) => state.items.items;
 export const itemReducer = itemSlice.reducer;

@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, Stack, styled, TextField } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, Stack, styled, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Item } from "./Item";
 import { BootstrapDialogTitle } from "./bootstrap-dialog-title";
 import { useAppDispatch } from "../../../app/hooks";
-import { doCreateItem, doUpdateItem, ItemToCreate } from "../../../redux/slices/item";
+import {
+     doCreateItem,
+     doLoadItems,
+     doUpdateItem,
+     itemsSelector,
+     ItemToCreate, setItems,
+} from "../../../redux/slices/item";
 import { ItemModel } from "../../../redux/types";
+import { useSelector } from "react-redux";
+import { Snackbar } from "@material-ui/core";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
      "& .MuiDialogContent-root": {
@@ -18,6 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 function AddItemDialog(props: { item?: ItemModel }) {
+     const [success, setSuccess] = useState(false);
      const [open, setOpen] = useState(false);
      const handleClose = () => {
           setOpen(false);
@@ -43,19 +52,35 @@ function AddItemDialog(props: { item?: ItemModel }) {
           weightInGrams: weightInGrams,
 
      };
+     const fetchData = async () => {
+          const items = await dispatch(doLoadItems()).unwrap();
+          dispatch(setItems(items));
+     };
      const addItem = () => {
-          dispatch(doCreateItem(itemToCreate));
+          dispatch(doCreateItem(itemToCreate)).finally( () => {
+               fetchData();
+               setSuccess(true)
+          });
           handleClose();
      };
      const editItem = () => {
           // @ts-ignore
           const item_id = props.item.id!;
           console.log(props.item);
-          dispatch(doUpdateItem({ itemToCreate, item_id }));
+          dispatch(doUpdateItem({ itemToCreate, item_id })).finally( () => {
+               fetchData();
+               setSuccess(true)
+          });
+          handleClose();
      };
 
      return (
           <div>
+               <Snackbar open={success} autoHideDuration={6000} onClose={() => setSuccess(false)}>
+                    <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                         Action successful
+                    </Alert>
+               </Snackbar>
                <Button color={`${props.item ? "steelBlue" : "secondary"}`} variant="outlined" onClick={handleClickOpen}>
                     <div>{props.item ? "Edit" : "Add item"}</div>
                     <div>{props.item ? <EditIcon /> : <AddBoxIcon />}</div>

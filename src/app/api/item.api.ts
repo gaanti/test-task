@@ -15,7 +15,7 @@ export interface ItemUpdateResponse {
 }
 
 export interface ItemDeleteResponse {
-     content: void;
+     content: boolean;
 }
 
 export const loadItems = (): Promise<ItemsLoadResponse> =>
